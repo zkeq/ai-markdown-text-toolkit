@@ -116,7 +116,7 @@ class QuestionItem(BaseModel):
 
 
 def verify_referer(referer: str = Header(None)):
-    allowed_referer = "[此处填写你的域名]"
+    allowed_referer = os.getenv("ALLOWED_REFERER")
     if referer != allowed_referer:
         raise HTTPException(status_code=403, detail="Forbidden: Invalid referer")
     
