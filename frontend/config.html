@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="referrer" content="no-referrer">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name=viewport
+        content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <title>在线文本统计、编辑与优化神器 - 后台配置</title>
+    <script src="https://unpkg.onmicrosoft.cn/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.onmicrosoft.cn/element-ui@2.15.10/lib/index.js"></script>
+    <script src="https://unpkg.onmicrosoft.cn/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.onmicrosoft.cn/element-ui@2.15.10/lib/theme-chalk/index.css" />
+    <script>
+        var API_CONFIG = "/api"
+    </script>
+    <style>
+        #app {
+            margin: 10px;
+            margin-top: 80px;
+        }
+
+        .v-center {
+            margin: 0;
+            text-align: center;
+        }
+
+
+        .box-card {
+            margin: 20px;
+        }
+
+        .box-card {
+            max-width: 550px;
+            margin: 15px auto;
+        }
+
+        .el-form-item:first-child {
+            padding-top: 20px;
+        }
+
+        .el-form-item:last-child {
+            padding-bottom: 30px;
+        }
+
+        .el-form-item {
+            margin-bottom: 8px;
+        }
+
+        .el-form-item__content {
+            padding-left: 10px;
+        }
+
+        .text_center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="app">
+        <el-card class="box-card">
+            <div slot="header" class="text_center">
+                <span>在线文本统计、编辑与优化神器 - 后台配置</span>
+            </div>
+
+            <el-alert title="您好 👋 欢迎使用该系统 请填写信息查询" type="success" :closable="false" show-icon center>
+            </el-alert>
+
+            <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item :rules="[
+      { required: true, message: '请输入密码', trigger: 'blur' },    ]" aria-required="" label="密码">
+                    <el-input placeholder="必填" v-model="form.password"></el-input>
+                </el-form-item>
+
+
+                <el-form-item>
+                    <center>
+                        <el-button type="primary" @click="GetData">立即查询</el-button>
+                    </center>
+                </el-form-item>
+
+                <el-form-item label="api_config">
+                    <el-input placeholder="" v-model="form.api_config"></el-input>
+                </el-form-item>
+
+                <el-form-item label="key">
+                    <el-input placeholder="" v-model="form.key"></el-input>
+                </el-form-item>
+             
+                <el-form-item label="prefix">
+                    <el-input placeholder="" v-model="form.prefix"></el-input>
+                </el-form-item>
+
+                <el-form-item label="model">
+                    <el-input placeholder="" v-model="form.model"></el-input>
+                </el-form-item>
+                
+                <el-form-item>
+                    <center>
+                        <el-button type="primary" @click="PutData">提交/更新</el-button>
+                    </center>
+                </el-form-item>
+            </el-form>
+
+
+        </el-card>
+
+        <!-- {{ClassMate}} -->
+    </div>
+    <script>
+
+        var Main = {
+            data() {
+                return {
+                    form: {
+                        password: "",
+                        key: "",
+                        api_config: "",
+                        prefix: "",
+                        model: ""
+                    },
+                }
+            },
+            methods: {
+                GetData() {
+                    this.$notify({
+                        title: '正在查询',
+                        message: '正在请求接口, 请稍后....',
+                        type: 'success' // 可以是 'success', 'warning', 'info', 'error'
+                    });
+                    axios.post(API_CONFIG + '/info', {
+                        password: this.form.password,
+                    })
+                        .then(({ data }) => {
+                            console.log(data);
+                            if (data.msg) {
+                                this.$notify({
+                                    title: data.msg,
+                                    message: data.detail,
+                                    type: 'error' // 可以是 'success', 'warning', 'info', 'error'
+                                });
+                            } else {
+                                this.$notify({
+                                    title: '查询成功',
+                                    message: '请在下方查看具体信息.',
+                                    type: 'success' // 可以是 'success', 'warning', 'info', 'error'
+                                });
+                                this.form.key = data.key;
+                                this.form.api_config = data.api_config;
+                                this.form.prefix = data.prefix;
+                                this.form.model = data.model;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+                PutData(){
+                    this.$notify({
+                        title: '正在提交',
+                        message: '正在请求接口, 请稍后....',
+                        type: 'success' // 可以是 'success', 'warning', 'info', 'error'
+                    });
+                    axios.put(API_CONFIG + '/info', {
+                        password: this.form.password,
+                        key: this.form.key,
+                        api_config: this.form.api_config,
+                        prefix: this.form.prefix,
+                        model: this.form.model
+                    })
+                        .then(({ data }) => {
+                            console.log(data);
+                            if (data.msg) {
+                                this.$notify({
+                                    title: data.msg,
+                                    message: data.detail,
+                                    type: 'error' // 可以是 'success', 'warning', 'info', 'error'
+                                });
+                            } else {
+                                this.$notify({
+                                    title: '更新成功',
+                                    message: '请求数据已更新至服务器',
+                                    type: 'success' // 可以是 'success', 'warning', 'info', 'error'
+                                });
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+            }
+        }
+        var Vue = Vue.extend(Main);
+
+        new Vue().$mount("#app");
+
+    </script>
+</body>
+
+</html>

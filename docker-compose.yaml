@@ -1,0 +1,20 @@
+version: "3"
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - ai-backend
+
+  ai-backend:
+    build: ./backend
+    volumes:
+      - ./backend/config.json:/app/config.json
+    environment:
+      - OPENAI_API_KEY="SK-1234567890"
+      - OPENAI_MODEL="gpt-3.5-turbo"
+      - OPENAI_API_URL="https://api.openai.com/v1/engines"

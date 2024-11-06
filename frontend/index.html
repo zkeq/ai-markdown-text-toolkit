@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IMYAI文本处理工具箱</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <script src="/cdn/marked.min.js"></script>
+  <script src="/cdn/striptags.js"></script>
+  <script src="/cdn/typed.umd.js"></script>
+  <script src="/cdn/he.js"></script>
+  <script src="/cdn/notiflix-aio-3.2.7.min.js"></script>
+  <script src="/cdn/intro.js"></script>
+  <link rel="stylesheet" href="/cdn/introjs.css" />
+
+  <script>
+    // document.documentElement.setAttribute('data-theme', 'dark');
+    const prefersDarkScheme = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    );
+
+    // 根据用户的系统主题设定 data-theme
+    if (prefersDarkScheme.matches) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light");
+    }
+  </script>
+  <style>
+    [data-theme="dark"] body {
+      background: #1b1b1d;
+      color: rgb(227, 227, 227);
+    }
+
+    [data-theme="dark"] textarea#content {
+      background: #1b1b1d;
+      color: rgb(227, 227, 227);
+      border: 2px solid #333;
+    }
+
+    [data-theme="dark"] .textarea:focus {
+      background: #1b1b1d;
+      border: 2px solid rgb(189, 189, 189) !important;
+    }
+
+    [data-theme="dark"] input:focus {
+      background: #1b1b1d;
+      border: 2px solid rgb(189, 189, 189) !important;
+    }
+
+    [data-theme="dark"] input {
+      background: #1b1b1d;
+      border: 2px solid #333;
+      color: rgb(227, 227, 227);
+    }
+
+    [data-theme="dark"] .header {
+      /* border: 1px solid red; */
+      background: #333;
+      border-radius: 20px;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .header {
+      /* max-width: 1240px; */
+      margin: 0 auto;
+      /* padding: 8px; */
+      margin-bottom: 10px;
+    }
+
+    [data-theme="dark"] #subtitle {
+      /* font-size: 18px; 设置副标题字号 */
+      color: rgb(227, 227, 227);
+      /* 设置副标题颜色 */
+      text-align: center;
+      /* 副标题居中对齐 */
+      margin-bottom: 20px;
+      /* 底部留出一些空间 */
+      font-weight: normal;
+    }
+
+    [data-theme="dark"] .nav button {
+      background: #333;
+      /* 深色背景 */
+      color: #fff;
+      /* 白色字体 */
+    }
+
+    [data-theme="dark"] .is-dark-mode {
+      background-color: #363636;
+      color: #fff;
+    }
+
+    [data-theme="dark"] .notification {
+      background-color: #363636;
+      color: #fff;
+    }
+
+    .app {
+      /* max-width: 600px 水平居中 */
+      margin: 0 auto;
+      /*padding-top: 6vh;*/
+      max-width: 840px;
+    }
+
+    header {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    .header {
+      /* max-width: 1240px; */
+      margin: 0 auto;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .page-title {
+      text-align: center;
+      /* 标题居中对齐 */
+      margin-top: [图片高度];
+      /* 根据固定图片的高度调整 */
+      padding: 12px 0 0 12px;
+      /* background-color: #f8f8f86e; 背景颜色，根据设计风格调整 */
+      color: #ff9d5e;
+      /* 字体颜色，根据设计风格调整 */
+      width: 100%;
+      /* 宽度占满全宽 */
+      box-sizing: border-box;
+      /* 防止内边距影响宽度计算 */
+      z-index: 10;
+      /* 确保标题在图片之上 */
+      position: relative;
+      /* 相对定位 */
+      /* border-radius: 25px; */
+      font-size: 1.875rem;
+      line-height: 2.25rem;
+      font-weight: 700;
+    }
+
+    .subtitle_wrapper {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-top: 20px;
+    }
+
+    #subtitle {
+      /* font-size: 18px; 设置副标题字号 */
+      color: black;
+      /* 设置副标题颜色 */
+      text-align: center;
+      /* 副标题居中对齐 */
+      margin-bottom: 20px;
+      /* 底部留出一些空间 */
+      font-weight: normal;
+      line-height: 1rem;
+    }
+
+    button {
+      border-radius: 5px !important;
+      font-weight: 600;
+    }
+
+    .replace-form {
+      border-color: #516e74;
+      box-shadow: 0 0 0 0.125em rgba(81, 110, 116, 0.25);
+      border: 2px solid transparent;
+      border-radius: 4px;
+      margin-bottom: 1rem !important;
+      align-items: center;
+    }
+
+    .replace_text {
+      line-height: 52px;
+      margin-left: 20px;
+    }
+
+    .replace_input {
+      width: 90%;
+      margin-left: 20px;
+      border-bottom: 1px solid black;
+    }
+
+    .replace_btn {
+      padding: 2px;
+      margin-right: 10px !important;
+    }
+
+    .search_input {
+      width: 100px;
+      height: 28px;
+      margin-top: 2px;
+      box-shadow: 0 0 0 0.125em rgba(81, 110, 116, 0.25);
+    }
+
+    /* 小于800px 时候 .replace-form 变成上下 flex 排列  */
+    @media screen and (max-width: 800px) {
+      .app {
+        padding-top: 3vh;
+      }
+
+      .replace-form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .replace_text {
+        margin-left: 0;
+      }
+
+      .replace_input {
+        margin-left: 0;
+        width: 240px;
+      }
+
+      .replace_btn {
+        margin-right: 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <div class="column is-three-fifths-desktop is-narrow">
+      <header>
+        <div class="header">
+          <h1 class="page-title">IMYAI文本处理工具箱</h1>
+          <div class="subtitle_wrapper">
+            <span id="subtitle">&nbsp;</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="field is-horizontal is-info">
+        <div class="field-body is-info">
+          <div class="field">
+            <div class="control">
+              <textarea class="textarea is-focused" placeholder="输入(或粘贴)你的文本内容:" rows="12" id="content"
+                autofocus=""></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-multiline replace-form">
+        <!-- 两个输入框 两个按钮 -->
+
+        <div class="field-label is-normal">
+          <label class="label replace_text">查找</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input class="replace_input input" type="text" placeholder="查找内容" id="search_content" />
+            </div>
+          </div>
+        </div>
+        <div class="field-label is-normal">
+          <label class="label replace_text">替换</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input class="replace_input input" type="text" placeholder="替换内容" id="replace_content" />
+            </div>
+          </div>
+        </div>
+        <div class="field-btn">
+          <button class="button is-primary is-rounded is-small replace_btn" type="reset" value="reset" name="reset"
+            onclick="replaceText()">
+            点击替换
+          </button>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-multiline" id="copyArea">
+        <span class="tag is-medium is-dark-mode"> 共计： </span>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark is-medium" id="zishu">0</span>
+            <span class="tag is-primary is-medium">个字数</span>
+          </div>
+        </div>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark is-medium" id="zifu">0</span>
+            <span class="tag is-primary is-medium">个字符</span>
+          </div>
+        </div>
+
+        <span class="tag is-medium is-dark-mode"> 其中 </span>
+        <div class="control">
+          <input class="search_input input" type="text" placeholder="内容" id="search_count" />
+        </div>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-primary is-medium">出现了</span>
+            <span class="tag is-dark is-medium" id="search_count-zifu">0</span>
+            <span class="tag is-primary is-medium">次</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-grouped is-grouped-multiline">
+        <span class="tag is-dark-mode"> 包含： </span>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark-mode" id="hanzi">0</span>
+            <span class="tag is-danger is-light">个汉字</span>
+          </div>
+        </div>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark-mode" id="biaodian">0</span>
+            <span class="tag is-info is-light">个标点(全角)</span>
+          </div>
+        </div>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark-mode" id="zimu">0</span>
+            <span class="tag is-success is-light">个字母</span>
+          </div>
+        </div>
+        <div class="control">
+          <div class="tags has-addons">
+            <span class="tag is-dark-mode" id="shuzi">0</span>
+            <span class="tag is-warning is-light">个数字</span>
+          </div>
+        </div>
+      </div>
+
+        <div id="mainButtons">
+
+        </div>
+
+
+      <div class="notification is-white-bis is-light tip-close-able">
+        <button onclick="closeTip()" class="delete"></button>
+        <a href="./more.html" target="_blank"><strong>字数</strong>和<strong>字符</strong>区别，以及其他帮助点这里!
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+      let buttons = [
+          {
+              "col": "col-7",
+              "onclick": "improveForm()",
+              "text": "Markdown文本一键转换普通文本"
+          },
+          {
+              "col": "col-3",
+              "onclick": "AIimproveForm()",
+              "text": "AI一键优化"
+          },
+          {
+              "col": "col-3",
+              "onclick": "AIConfig()",
+              "text": "AI预设配置"
+          },
+          {
+              "col": "col-3",
+              "onclick": "saveForm()",
+              "text": "另存为文件"
+          },
+          {
+              "col": "col-2",
+              "onclick": "undoBtn()",
+              "text": "撤销"
+          },
+          {
+              "col": "col-2",
+              "onclick": "redoBtn()",
+              "text": "还原"
+          },
+          {
+              "col": "col-2",
+              "onclick": "copyForm()",
+              "text": "复制"
+          },
+          {
+              "col": "col-2",
+              "onclick": "cutForm()",
+              "text": "剪切"
+          },
+          {
+              "col": "col-2",
+              "onclick": "resetForm()",
+              "text": "清空"
+          },
+          {
+              "col": "col-3",
+              "onclick": "autoIndent()",
+              "text": "一键排版"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteBlankLine()",
+              "text": "删除空行"
+          },
+          {
+              "col": "col-3",
+              "onclick": "addBlank()",
+              "text": "添加空行"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteChinese()",
+              "text": "清除中文"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteEnglish()",
+              "text": "清除英文"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteNumber()",
+              "text": "清除数字"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteSymbol()",
+              "text": "清除符号"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteBlank()",
+              "text": "清除空格"
+          },
+          {
+              "col": "col-3",
+              "onclick": "muchBlankSaveOne()",
+              "text": "多空保一"
+          },
+          {
+              "col": "col-3",
+              "onclick": "deleteLineBreak()",
+              "text": "删除换行"
+          },
+          {
+              "col": "col-6",
+              "onclick": "EnglishPunctuationToChinese()",
+              "text": "英文标点转中文"
+          },
+          {
+              "col": "col-6",
+              "onclick": "ChinesePunctuationToEnglish()",
+              "text": "中文标点转英文"
+          },
+          {
+              "col": "col-2",
+              "onclick": "AllCapital()",
+              "text": "全大写"
+          },
+          {
+              "col": "col-2",
+              "onclick": "AllLower()",
+              "text": "全小写"
+          },
+          {
+              "col": "col-4",
+              "onclick": "WordCapital()",
+              "text": "单词首字母大写"
+          },
+          {
+              "col": "col-5",
+              "onclick": "WordLower()",
+              "text": "单词首字母小写"
+          },
+          {
+              "col": "col-5",
+              "onclick": "SentenceCapital()",
+              "text": "句首字母大写"
+          },
+          {
+              "col": "col-7",
+              "onclick": "WordToPinyinWithIntonation()",
+              "text": "文字转拼音(带声调)"
+          },
+          {
+              "col": "col-7",
+              "onclick": "WordToPinyinNoIntonation()",
+              "text": "文字转拼音(不带声调)"
+          },
+          {
+              "col": "col-7",
+              "onclick": "WordToPinyinWithNumberIntonation()",
+              "text": "文字转拼音(声调数字)"
+          },
+          {
+              "col": "col-7",
+              "onclick": "WordToPinyinWithAlphabet()",
+              "text": "文字转拼音(首字母)"
+          },
+          {
+              "col": "col-7",
+              "onclick": "AddSpacesBetweenChineseAndEnglish()",
+              "text": "中英文之间加空格"
+          }
+      ];
+
+      const gridConfig = {
+          "default": 26,
+          "breakpoints": {
+              "1200px": 24,
+              "992px": 19,
+              "768px": 15,
+              "576px": 12
+          }
+      };
+
+      function getGridColumns() {
+          const width = window.innerWidth;
+          if (width <= 576) return gridConfig.breakpoints["576px"];
+          if (width <= 768) return gridConfig.breakpoints["768px"];
+          if (width <= 992) return gridConfig.breakpoints["992px"];
+          if (width <= 1200) return gridConfig.breakpoints["1200px"];
+          return gridConfig.default;
+      }
+
+      function createButton(button) {
+          let btn = document.createElement("button");
+          btn.className = `grid-item button is-primary is-rounded is-small ${button.col}`;
+          btn.onclick = () => {
+              eval(button.onclick);
+          };
+          btn.innerText = button.text;
+          if (btn.innerText === "AI一键优化") {
+              btn.id = "aiBtn";
+          }
+          return btn;
+      }
+
+      function enableDragAndDrop() {
+          const container = document.getElementById("mainButtons");
+          let dragged;
+
+          container.addEventListener("dragstart", function(event) {
+              dragged = event.target;
+              event.target.style.opacity = 0.5;
+          });
+
+          container.addEventListener("dragend", function(event) {
+              event.target.style.opacity = "";
+          });
+
+          container.addEventListener("dragover", function(event) {
+              event.preventDefault();
+          });
+
+          container.addEventListener("dragenter", function(event) {
+              if (event.target.className.includes("grid-item")) {
+                  event.target.style.border = "2px dashed #000";
+              }
+          });
+
+          container.addEventListener("dragleave", function(event) {
+              if (event.target.className.includes("grid-item")) {
+                  event.target.style.border = "";
+              }
+          });
+
+          container.addEventListener("drop", function(event) {
+              event.preventDefault();
+              if (event.target.className.includes("grid-item")) {
+                  event.target.style.border = "";
+                  if (dragged !== event.target) {
+                      let allButtons = Array.from(container.querySelectorAll(".grid-item"));
+                      let draggedIndex = allButtons.indexOf(dragged);
+                      let targetIndex = allButtons.indexOf(event.target);
+
+
+                      // Update buttons array
+                      buttons.splice(targetIndex, 0, buttons.splice(draggedIndex, 1)[0]);
+
+                      // Save new order of button IDs to localStorage
+                      const buttonIds = buttons.map(button => button.onclick);
+                      localStorage.setItem("buttonsOrder", JSON.stringify(buttonIds));
+
+                      // Re-render buttons
+                      renderButtons();
+                  }
+              }
+          });
+
+          let touchTimeout;
+
+          container.addEventListener("touchstart", function(event) {
+              if (event.target.className.includes("grid-item")) {
+                  touchStartX = event.touches[0].clientX;
+                  touchStartY = event.touches[0].clientY;
+
+                  touchTimeout = setTimeout(() => {
+                      dragged = event.target;
+                      event.target.style.opacity = 0.5;
+                  }, 1200);
+              }
+          });
+
+          container.addEventListener("touchmove", function(event) {
+              if (touchTimeout) {
+                  clearTimeout(touchTimeout);
+                  touchTimeout = null;
+              }
+
+              if (dragged) {
+                  event.preventDefault();
+                  let touch = event.touches[0];
+                  let target = document.elementFromPoint(touch.clientX, touch.clientY);
+                  if (target && target.className.includes("grid-item")) {
+                      target.style.border = "2px dashed #000";
+                  }
+              }
+          });
+
+          container.addEventListener("touchend", function(event) {
+              if (touchTimeout) {
+                  clearTimeout(touchTimeout);
+                  touchTimeout = null;
+              }
+
+              if (dragged) {
+                  let touch = event.changedTouches[0];
+                  let target = document.elementFromPoint(touch.clientX, touch.clientY);
+                  if (target && target.className.includes("grid-item")) {
+                      target.style.border = "";
+                      if (dragged !== target) {
+                          let allButtons = Array.from(container.querySelectorAll(".grid-item"));
+                          let draggedIndex = allButtons.indexOf(dragged);
+                          let targetIndex = allButtons.indexOf(target);
+
+                          // Update buttons array
+                          buttons.splice(targetIndex, 0, buttons.splice(draggedIndex, 1)[0]);
+
+                          // Save new order of button IDs to localStorage
+                          const buttonIds = buttons.map(button => button.onclick);
+                          localStorage.setItem("buttonsOrder", JSON.stringify(buttonIds));
+
+                          // Re-render buttons
+                          renderButtons();
+                      }
+                  }
+                  dragged.style.opacity = "";
+                  dragged = null;
+              }
+          });
+      }
+
+      function createBoundingDiv(element1, element2) {
+          const rect1 = element1.getBoundingClientRect();
+          const rect2 = element2.getBoundingClientRect();
+
+          const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+          const minX = Math.min(rect1.left, rect2.left) + scrollX;
+          const minY = Math.min(rect1.top, rect2.top) + scrollY;
+          const maxX = Math.max(rect1.right, rect2.right) + scrollX;
+          const maxY = Math.max(rect1.bottom, rect2.bottom) + scrollY;
+
+          const boundingDiv = document.createElement('div');
+          boundingDiv.style.position = 'absolute';
+          boundingDiv.style.left = `${minX}px`;
+          boundingDiv.style.top = `${minY}px`;
+          boundingDiv.style.width = `${maxX - minX}px`;
+          boundingDiv.style.height = `${maxY - minY}px`;
+          boundingDiv.style.zIndex = "-1";
+
+          document.body.appendChild(boundingDiv);
+
+          return boundingDiv;
+      }
+
+      let firstStepBoundingDiv = null;
+      let secondStepBoundingDiv = null;
+
+      function createIntroBtnDiv() {
+          const element1 = document.getElementsByClassName('grid-container')[0].children[0];
+          const element2 = document.getElementsByClassName('grid-container')[1].children[0];
+          firstStepBoundingDiv = createBoundingDiv(element1, element2);
+      }
+
+      function createTextareaResizeDiv() {
+          const textarea = document.querySelector('textarea');
+          const rect = textarea.getBoundingClientRect();
+
+          const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+          const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+          const left = rect.right - 80 + scrollX;
+          const top = rect.bottom - 60 + scrollY;
+          const width = 160;
+          const height = 120;
+
+          const boundingDiv = document.createElement('div');
+          boundingDiv.style.position = 'absolute';
+          boundingDiv.style.left = `${left}px`;
+          boundingDiv.style.top = `${top}px`;
+          boundingDiv.style.width = `${width}px`;
+          boundingDiv.style.height = `${height}px`;
+          boundingDiv.style.zIndex = "-1";
+
+          document.body.appendChild(boundingDiv);
+
+          secondStepBoundingDiv = boundingDiv;
+      }
+
+      function destroyIntroBtnDiv() {
+          if (firstStepBoundingDiv) {
+              firstStepBoundingDiv.remove();
+              firstStepBoundingDiv = null;
+          }
+          if (secondStepBoundingDiv) {
+              secondStepBoundingDiv.remove();
+              secondStepBoundingDiv = null;
+          }
+          localStorage.setItem("introCompleted", "true");
+      }
+
+      function InitIntro() {
+          createIntroBtnDiv();
+          createTextareaResizeDiv();
+          introJs().setOptions({
+              steps: [
+                  {
+                      title: '新功能上线啦',
+                      element: firstStepBoundingDiv,
+                      intro: "<p>支持按钮拖拽排序！按住按钮就可以调整位置，可以把你喜欢的常用的按钮提前啦~<p><img src=\"/image/step1.gif\">"
+                  },
+                  {
+                      title: '调整大小功能',
+                      element: secondStepBoundingDiv,
+                      intro: "<p>现在可以通过拖动右下角来调整文本框的大小！<p><img src=\"/image/step2.gif\">"
+                  }
+              ]
+          }).oncomplete(destroyIntroBtnDiv)
+              .onexit(destroyIntroBtnDiv)
+              .start();
+      }
+
+      function resizeBoundingDivs() {
+          if (firstStepBoundingDiv) {
+              const element1 = document.getElementsByClassName('grid-container')[0].children[0];
+              const element2 = document.getElementsByClassName('grid-container')[1].children[0];
+              const rect1 = element1.getBoundingClientRect();
+              const rect2 = element2.getBoundingClientRect();
+
+              const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+              const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+              const minX = Math.min(rect1.left, rect2.left) + scrollX;
+              const minY = Math.min(rect1.top, rect2.top) + scrollY;
+              const maxX = Math.max(rect1.right, rect2.right) + scrollX;
+              const maxY = Math.max(rect1.bottom, rect2.bottom) + scrollY;
+
+              firstStepBoundingDiv.style.left = `${minX}px`;
+              firstStepBoundingDiv.style.top = `${minY}px`;
+              firstStepBoundingDiv.style.width = `${maxX - minX}px`;
+              firstStepBoundingDiv.style.height = `${maxY - minY}px`;
+          }
+
+          if (secondStepBoundingDiv) {
+              const textarea = document.querySelector('textarea');
+              const rect = textarea.getBoundingClientRect();
+
+              const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+              const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+              const left = rect.right - 80 + scrollX;
+              const top = rect.bottom - 60 + scrollY;
+              const width = 160;
+              const height = 120;
+
+              secondStepBoundingDiv.style.left = `${left}px`;
+              secondStepBoundingDiv.style.top = `${top}px`;
+              secondStepBoundingDiv.style.width = `${width}px`;
+              secondStepBoundingDiv.style.height = `${height}px`;
+          }
+      }
+
+      window.addEventListener('resize', resizeBoundingDivs);
+
+      function renderButtons() {
+          const container = document.getElementById("mainButtons");
+          container.innerHTML = ""; // Clear existing buttons
+
+          let storedButtonIds = localStorage.getItem("buttonsOrder");
+          if (storedButtonIds) {
+              const buttonIds = JSON.parse(storedButtonIds);
+              buttons.sort((a, b) => buttonIds.indexOf(a.onclick) - buttonIds.indexOf(b.onclick));
+          }
+
+          let currentRow = document.createElement("div");
+          let currentCols = 0;
+          const maxCols = getGridColumns();
+
+          buttons.forEach(button => {
+              const colSpan = parseInt(button.col.split('-')[1]);
+              if (currentCols + colSpan > maxCols) {
+                  currentRow.className = `grid-container grid-template-columns-${currentCols}`;
+                  container.appendChild(currentRow);
+                  currentRow = document.createElement("div");
+                  currentCols = 0;
+              }
+              let btn = createButton(button);
+              btn.setAttribute("draggable", true);
+              currentRow.appendChild(btn);
+              currentCols += colSpan;
+          });
+
+          if (currentCols > 0) {
+              currentRow.className = `grid-container grid-template-columns-${currentCols}`;
+              container.appendChild(currentRow);
+          }
+
+          if (!localStorage.getItem("introCompleted") && !document.querySelector(".introjs-tooltip")) {
+              InitIntro();
+          }
+      }
+
+      window.addEventListener("resize", renderButtons);
+      document.addEventListener("DOMContentLoaded", renderButtons);
+      document.addEventListener("DOMContentLoaded", enableDragAndDrop);
+
+      // Function to save textarea content to localStorage on blur
+      function saveContent() {
+          const content = document.getElementById('content').value;
+          localStorage.setItem('textareaContent', content);
+      }
+
+      // Function to load textarea content from localStorage on page load
+      function loadContent() {
+          const savedContent = localStorage.getItem('textareaContent');
+          if (savedContent) {
+              document.getElementById('content').value = savedContent;
+          }
+          CountChineseCharacters();
+      }
+
+      // Add blur event listener to textarea
+      document.getElementById('content').addEventListener('blur', saveContent);
+
+      // Load content on page load
+      document.addEventListener('DOMContentLoaded', loadContent);
+
+    function $(id) {
+      return document.getElementById(id);
+    }
+    var EventUtil = function () { };
+    EventUtil.addEventHandler = function (obj, EventType, Handler) {
+      if (obj.addEventListener) {
+        obj.addEventListener(EventType, Handler, false);
+      } else if (obj.attachEvent) {
+        obj.attachEvent("on" + EventType, Handler);
+      } else {
+        obj["on" + EventType] = Handler;
+      }
+    };
+    if ($("content")) {
+      EventUtil.addEventHandler(
+        $("content"),
+        "propertychange",
+        CountChineseCharacters
+      );
+      EventUtil.addEventHandler(
+        $("content"),
+        "input",
+        CountChineseCharacters
+      );
+    }
+    function showit(Word) {
+      alert(Word);
+    }
+    function CountChineseCharacters() {
+      Words = $("content").value;
+      var W = new Object();
+      var Result = new Array();
+      var iNumwords = 0;
+      var sNumwords = 0;
+      var sTotal = 0;
+      var iTotal = 0;
+      var eTotal = 0;
+      var otherTotal = 0;
+      var bTotal = 0;
+      var inum = 0;
+      for (i = 0; i < Words.length; i++) {
+        var c = Words.charAt(i);
+        if (c.match(/[\u4e00-\u9fa5]/)) {
+          if (isNaN(W[c])) {
+            iNumwords++;
+            W[c] = 1;
+          }
+          iTotal++;
+        }
+      }
+      for (i = 0; i < Words.length; i++) {
+        var c = Words.charAt(i);
+        if (c.match(/[^\x00-\xff]/)) {
+          if (isNaN(W[c])) {
+            sNumwords++;
+          }
+          sTotal++;
+        } else {
+          eTotal++;
+        }
+        if (c.match(/[0-9]/)) {
+          inum++;
+        }
+      }
+      $("hanzi").innerText = iTotal;
+      $("zishu").innerText = inum + iTotal;
+      $("biaodian").innerText = sTotal - iTotal;
+      $("zimu").innerText = eTotal - inum;
+      $("shuzi").innerText = inum;
+      document.getElementById("zifu").innerHTML =
+        iTotal * 2 + (sTotal - iTotal) * 2 + eTotal;
+    }
+    function replaceText() {
+      localStorage.setItem("replace_content", JSON.stringify({
+        search_content: document.getElementById("search_content").value,
+        replace_content: document.getElementById("replace_content").value
+      }));
+      let searchContent = document.getElementById("search_content").value;
+      let replaceContent = document.getElementById("replace_content").value;
+      let content = document.getElementById("content").value;
+      let newContent = content.replaceAll(searchContent, replaceContent);
+      document.getElementById("content").value = newContent;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+    if (localStorage.getItem("replace_content")) {
+      let replaceContent = JSON.parse(localStorage.getItem("replace_content"));
+      document.getElementById("search_content").value = replaceContent.search_content;
+      document.getElementById("replace_content").value = replaceContent.replace_content;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      (document.querySelectorAll(".notification .delete") || []).forEach(
+        ($delete) => {
+          $notification = $delete.parentNode;
+
+          $delete.addEventListener("click", () => {
+            $notification.parentNode.removeChild($notification);
+          });
+        }
+      );
+
+      const $navbarBurgers = Array.prototype.slice.call(
+        document.querySelectorAll(".navbar-burger"),
+        0
+      );
+      if ($navbarBurgers.length > 0) {
+        $navbarBurgers.forEach((el) => {
+          el.addEventListener("click", () => {
+            const target = el.dataset.target;
+            const $target = document.getElementById(target);
+            el.classList.toggle("is-active");
+            $target.classList.toggle("is-active");
+          });
+        });
+      }
+    });
+
+    function resetForm() {
+      document.getElementById("content").value = "";
+      CountChineseCharacters();
+      pushUndoStack();
+    }
+
+    let AiBtnLive = true;
+
+    function AIimproveForm() {
+      if (!AiBtnLive) {
+        Notiflix.Notify.warning("AI正在处理中，请稍后再试！");
+        return;
+      }
+      let markdownText = document.getElementById("content").value;
+      // 使按钮变成不可点击的状态 显示 Loading
+      document.querySelector("#aiBtn").innerText = "处理中...";
+
+      AiBtnLive = false;
+
+      let timestamp = new Date().getTime();
+
+      data = {
+        text: markdownText,
+        timestamp: timestamp,
+        prefix: localStorage.getItem("ai_prefix") || null,
+      };
+
+      document.getElementById("content").value = "";
+
+      Notiflix.Notify.info("AI正在处理中，请稍后...");
+
+      fetch("/api/improve", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          const reader = response.body.getReader();
+          let decoder = new TextDecoder("utf-8");
+          let data = "";
+
+          return new ReadableStream({
+            start(controller) {
+              function push() {
+                reader.read().then(({ done, value }) => {
+                  if (done) {
+                    // 处理剩余的数据
+                    if (data.length > 0) {
+                      CountChineseCharacters();
+                      pushUndoStack();
+                      AiBtnLive = true;
+                      document.querySelector("#aiBtn").innerText =
+                        "AI一键优化";
+                      Notiflix.Notify.success("AI处理完成!");
+                    }
+                    controller.close();
+                    return;
+                  }
+
+                  data += decoder.decode(value, { stream: true });
+
+                  try {
+                    _data = JSON.parse(data);
+                    if (_data?.error?.type === "one_api_error") {
+                      Notiflix.Notify.failure(
+                        "AI接口出现异常，当前分组无可用渠道，请联系系统管理员修复"
+                      );
+                      document.getElementById("content").value +=
+                        markdownText;
+                      CountChineseCharacters();
+                      pushUndoStack();
+                      AiBtnLive = true;
+                      document.querySelector("#aiBtn").innerText =
+                        "AI一键优化";
+                      return;
+                    } else if (!_data.model) {
+                      Notiflix.Notify.failure("AI处理失败，请稍后再试！");
+                      document.getElementById("content").value +=
+                        markdownText;
+                      CountChineseCharacters();
+                      pushUndoStack();
+                      AiBtnLive = true;
+                      document.querySelector("#aiBtn").innerText =
+                        "AI一键优化";
+                    }
+                  } catch { }
+
+                  let boundary = data.indexOf("data: ");
+                  while (boundary !== -1) {
+                    let piece = data.slice(0, boundary);
+
+                    if (piece !== "") {
+                      let stream = JSON.parse(piece).choices[0].delta.content;
+                      if (stream) {
+                        document.getElementById("content").value += stream;
+                      }
+                      CountChineseCharacters();
+                    }
+
+                    data = data.slice(boundary + 6);
+                    boundary = data.indexOf("data: ");
+                  }
+
+                  push();
+                });
+              }
+              push();
+            },
+          });
+        })
+        .catch((err) => {
+          Notiflix.Notify.failure("AI处理失败，请稍后再试！");
+          document.getElementById("content").value += markdownText;
+          CountChineseCharacters();
+          pushUndoStack();
+          AiBtnLive = true;
+          document.querySelector("#aiBtn").innerText = "AI一键优化";
+        });
+    }
+
+    // 配置 prifix
+
+    Notiflix.Confirm.init({
+      className: 'notiflix-confirm',
+      width: '300px',
+      zindex: 4003,
+      position: 'center',
+      distance: '10px',
+      backgroundColor: '#1B1B1D',
+      borderRadius: '25px',
+      backOverlay: true,
+      backOverlayColor: 'rgba(0,0,0,0.5)',
+      rtl: false,
+      fontFamily: 'Quicksand',
+      cssAnimation: true,
+      cssAnimationDuration: 300,
+      cssAnimationStyle: 'fade',
+      plainText: true,
+      titleColor: 'white',
+      titleFontSize: '16px',
+      titleMaxLength: 34,
+      messageColor: 'white',
+      messageFontSize: '14px',
+      messageMaxLength: 110,
+      buttonsFontSize: '15px',
+      buttonsMaxLength: 34,
+      okButtonColor: 'white',
+      okButtonBackground: '#FEC170',
+      cancelButtonColor: '#f8f8f8',
+      cancelButtonBackground: '#a9a9a9',
+    });
+
+    function AIConfig() {
+      Notiflix.Confirm.prompt(
+        "AI优化设置",
+        "在下方输入您的提示词",
+        localStorage.getItem("ai_prefix") || "你是文本优化神器，请你对这段文本重新排版，在适当的地方添加对应的emoji表情符号，同时内容保持不变，使整体看起来更加美观，整洁，专业。如果是Markdown格式的文本，需要将其转换为简洁的普通文本。请在转换过程中去除所有Markdown的格式符号，如标题标记 (`#`, `##`, `###`, 等)、粗体 (`**` 或 `__`)、斜体 (`*` 或 `_`)、无序列表符号 (`*`, `-`, `+`)、有序列表数字、代码块标记 (` ``` `)以及其他特殊符号。仅保留文本内容和结构，而不包含任何格式化标记。",
+        "确认",
+        "取消",
+        (clientAnswer) => {
+          localStorage.setItem("ai_prefix", clientAnswer);
+          Notiflix.Notify.success("提示词已设置成功, 下次AI优化时将使用您的提示词");
+        },
+        (clientAnswer) => {
+          Notiflix.Notify.success("已取消设置提示词");
+        },
+        {}
+      );
+    }
+
+    function improveForm() {
+      let markdownText = document.getElementById("content").value;
+      let normalText = removeMarkdown(markdownText);
+      document.getElementById("content").value = normalText;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function copyForm() {
+      let copyText = document.getElementById("content");
+      copyText.select();
+      document.execCommand("Copy");
+      pushUndoStack();
+      Notiflix.Notify.success("复制成功！");
+    }
+
+    function cutForm() {
+      let cutText = document.getElementById("content");
+      cutText.select();
+      document.execCommand("Cut");
+      pushUndoStack();
+      Notiflix.Notify.success("剪切成功！");
+    }
+
+    function removeMarkdown(markdown) {
+      let html = marked.parse(markdown);
+      // 使用 striptags 库删除所有 HTML 标签，得到普通文本
+      let text = striptags(html);
+      let decodedText = he.decode(text);
+
+      return decodedText;
+    }
+
+    function closeTip() {
+      document.querySelector(".tip-close-able").style.display = "none";
+    }
+
+    function autoIndent() {
+      let text = document.getElementById("content").value;
+      // 使用正则表达式分割文本
+      let paragraphs = text.split(/\n+/);
+
+      // 处理每一段
+      paragraphs = paragraphs.map((paragraph) => {
+        // 删除段落中的每一个空格
+        paragraph = paragraph.replace(/\s/g, "");
+
+        // 每段增加两个中文空格的缩进
+        paragraph = "　　" + paragraph;
+
+        return paragraph;
+      });
+
+      // 保证每段之间有一个空行
+      let formattedText = paragraphs.join("\n\n");
+
+      document.getElementById("content").value = formattedText;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteBlankLine() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/^\s*[\r\n]/gm, "");
+
+      // 使用正则表达式删除每一段的首行缩进
+      result = result.replace(/^\s+/gm, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteLineBreak() {
+      let text = document.getElementById("content").value;
+
+      document.getElementById("content").value = text.replace(/\n/g, "");
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function addBlank() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/^\s*[\r\n]/gm, "");
+
+      // 使用正则表达式删除每一段的首行缩进
+      result = result.replace(/^\s+/gm, "");
+
+      // 在每一段的末尾添加一个空行
+      result = result.replace(/\n/g, "\n\n");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteChinese() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/[\u4e00-\u9fa5]/g, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteEnglish() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/[a-zA-Z]/g, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteNumber() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/[0-9]/g, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteSymbol() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/[\[\]\(\)#\*]/g, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function deleteBlank() {
+      let text = document.getElementById("content").value;
+
+      let result = text.replace(/\ /g, "");
+
+      // 包括
+      result = result.replace(/\u3000/g, "");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function muchBlankSaveOne() {
+      let text = document.getElementById("content").value;
+
+      // 使用正则表达式替换多个连续的空格为一个，保留换行符
+      let result = text.replace(/[ \t]+/g, " ");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function EnglishPunctuationToChinese() {
+      let text = document.getElementById("content").value;
+
+      let replacements = {
+        "!": "！",
+        "?": "？",
+        ",": "，",
+        ".": "。",
+        ":": "：",
+        ";": "；",
+        "'": "‘",
+        '"': "“",
+        "(": "（",
+        ")": "）",
+        "[": "【",
+        "]": "】",
+        "<": "《",
+        ">": "》",
+        "~": "～",
+        "@": "＠",
+        $: "￥",
+        "&": "＆",
+        "+": "＋",
+        "=": "＝",
+        "\\": "＼",
+        "|": "｜",
+        _: "＿",
+        "/": "／",
+      };
+
+      let result = text
+        .split("")
+        .map((char) => replacements[char] || char)
+        .join("");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function ChinesePunctuationToEnglish() {
+      let text = document.getElementById("content").value;
+
+      let replacements = {
+        "！": "!",
+        "？": "?",
+        "，": ",",
+        "。": ".",
+        "！": "!",
+        "？": "?",
+        "，": ",",
+        "。": ".",
+        "：": ":",
+        "；": ";",
+        "‘": "'",
+        "“": '"',
+        "（": "(",
+        "）": ")",
+        "【": "[",
+        "】": "]",
+        "《": "<",
+        "》": ">",
+        "～": "~",
+        "＠": "@",
+        "￥": "$",
+        "＆": "&",
+        "＋": "+",
+        "＝": "=",
+        "＼": "\\",
+        "｜": "|",
+        "＿": "_",
+        "／": "/",
+      };
+
+      let result = text
+        .split("")
+        .map((char) => replacements[char] || char)
+        .join("");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function AllCapital() {
+      let text = document.getElementById("content").value;
+
+      let result = text.toUpperCase();
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function AllLower() {
+      let text = document.getElementById("content").value;
+
+      let result = text.toLowerCase();
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function WordCapital() {
+      let text = document.getElementById("content").value;
+
+      // 使用正则表达式替换每个单词的首字母为大写
+      let result = text.replace(/\b\w+\b/g, function (word) {
+        return word.substring(0, 1).toUpperCase() + word.substring(1);
+      });
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function WordLower() {
+      let text = document.getElementById("content").value;
+
+      // 使用正则表达式替换每个单词的首字母为小写
+      let result = text.replace(/\b\w+\b/g, function (word) {
+        return word.substring(0, 1).toLowerCase() + word.substring(1);
+      });
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function SentenceCapital() {
+      let text = document.getElementById("content").value;
+
+      // 使用正则表达式替换每个句子的首字母为大写
+      let result = text.replace(/(^\w)|(\.\s+\w)/gm, function (word) {
+        return word.toUpperCase();
+      });
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    function WordToPinyinWithIntonation() {
+      // 请求 API /pinyin {"text": "", t: timestamp, "type": "intonation"}
+      let text = document.getElementById("content").value;
+      let timestamp = new Date().getTime();
+      let data = {
+        text: text,
+        timestamp: timestamp,
+        type: "intonation",
+      };
+
+      Notiflix.Notify.success("正在提交服务端处理请求!");
+
+      fetch("/api/pinyin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        // 直接读取post请求 不用流式
+        .then((response) => response.json())
+        .then((data) => {
+          Notiflix.Notify.success("服务端处理完成!");
+
+          document.getElementById("content").value = data.text;
+          pushUndoStack();
+          CountChineseCharacters();
+        });
+    }
+
+    function WordToPinyinNoIntonation() {
+      // 请求 API /pinyin {"text": "", t: timestamp, "type": "noIntonation"}
+      let text = document.getElementById("content").value;
+      let timestamp = new Date().getTime();
+      let data = {
+        text: text,
+        timestamp: timestamp,
+        type: "noIntonation",
+      };
+
+      Notiflix.Notify.success("正在提交服务端处理请求!");
+
+      fetch("/api/pinyin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        // 直接读取post请求 不用流式
+        .then((response) => response.json())
+        .then((data) => {
+          Notiflix.Notify.success("服务端处理完成!");
+
+          document.getElementById("content").value = data.text;
+          pushUndoStack();
+          CountChineseCharacters();
+        });
+    }
+
+    function WordToPinyinWithNumberIntonation() {
+      // 请求 API /pinyin {"text": "", t: timestamp, "type": "numberIntonation"}
+      let text = document.getElementById("content").value;
+      let timestamp = new Date().getTime();
+      let data = {
+        text: text,
+        timestamp: timestamp,
+        type: "numberIntonation",
+      };
+
+      Notiflix.Notify.success("正在提交服务端处理请求!");
+
+      fetch("/api/pinyin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        // 直接读取post请求 不用流式
+        .then((response) => response.json())
+        .then((data) => {
+          Notiflix.Notify.success("服务端处理完成!");
+
+          document.getElementById("content").value = data.text;
+          pushUndoStack();
+          CountChineseCharacters();
+        });
+    }
+
+    function WordToPinyinWithAlphabet() {
+      // 请求 API /pinyin {"text": "", t: timestamp, "type": "alphabet"}
+      let text = document.getElementById("content").value;
+      let timestamp = new Date().getTime();
+      let data = {
+        text: text,
+        timestamp: timestamp,
+        type: "alphabet",
+      };
+
+      Notiflix.Notify.success("正在提交服务端处理请求!");
+
+      fetch("/api/pinyin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        // 直接读取post请求 不用流式
+        .then((response) => response.json())
+        .then((data) => {
+          Notiflix.Notify.success("服务端处理完成!");
+
+          document.getElementById("content").value = data.text;
+          pushUndoStack();
+          CountChineseCharacters();
+        });
+    }
+
+    function AddSpacesBetweenChineseAndEnglish() {
+      let text = document.getElementById("content").value;
+
+      // 使用正则表达式在中文和英文之间添加空格
+      let result = text.replace(/([\u4e00-\u9fa5])([a-zA-Z])/g, "$1 $2");
+      result = result.replace(/([a-zA-Z])([\u4e00-\u9fa5])/g, "$1 $2");
+
+      // 中文数字和英文数字之间添加空格
+      result = result.replace(/([\u4e00-\u9fa5])([0-9])/g, "$1 $2");
+      result = result.replace(/([0-9])([\u4e00-\u9fa5])/g, "$1 $2");
+
+      document.getElementById("content").value = result;
+      pushUndoStack();
+      CountChineseCharacters();
+    }
+
+    // 监听 search_count 改变的时候 重新计算 search_count-zifu
+    document
+      .getElementById("search_count")
+      .addEventListener("input", function () {
+        let searchContent = document.getElementById("search_count").value;
+        // 为空的时候直接返回
+        if (searchContent === "") {
+          document.getElementById("search_count-zifu").innerText = 0;
+          return;
+        }
+        let content = document.getElementById("content").value;
+        let count = content.split(searchContent).length - 1;
+        document.getElementById("search_count-zifu").innerText = count;
+      });
+
+    let undoStack = [""];
+    let redoStack = [];
+    let textArea = document.querySelector("textarea");
+    textArea.addEventListener("input", function () {
+      pushUndoStack();
+    });
+
+    function pushUndoStack() {
+      undoStack.push(textArea.value);
+      if (undoStack.length > 100) {
+        undoStack.shift(); // 移除栈底部的元素
+      }
+    }
+
+    function undoBtn() {
+      if (undoStack.length > 1) {
+        redoStack.push(undoStack.pop());
+        textArea.value = undoStack[undoStack.length - 1];
+        CountChineseCharacters();
+      }
+    }
+
+    function redoBtn() {
+      if (redoStack.length > 0) {
+        let redoValue = redoStack.pop();
+        undoStack.push(redoValue);
+        textArea.value = redoValue;
+        CountChineseCharacters();
+      }
+    }
+
+    function saveForm() {
+      let content = document.getElementById("content").value;
+      let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+
+      // 弹出框询问保存文件名字
+      let name = prompt("请输入文件名", "文本");
+
+      // 如何点击取消按钮，返回null，不进行保存
+      if (name === null) {
+        return;
+      }
+
+      // 创建一个a标签元素
+      let a = document.createElement("a");
+      // 使用URL.createObjectURL方法创建一个可以下载的链接
+      a.href = URL.createObjectURL(blob);
+      // 设置下载的文件名
+      a.download = name + ".txt";
+      // 触发点击事件开始下载
+      a.click();
+    }
+
+    var typed = new Typed("#subtitle", {
+      strings: [
+        "粘贴文本，帮你快速处理复制了Ai回答后产生的 # * 等多余Markdown文本符号！",
+        "粘贴文本，帮你快速统计汉字、字母、数字以及标点个数！",
+        "IMYAI智能助手，你的终身学习生活聊天伙伴！",
+      ],
+      typeSpeed: 60,
+      backSpeed: 60,
+      backDelay: 500,
+      loop: true,
+    });
+  </script>
+
+  <!-- 
+    <script>
+        // 点击按钮 replace-form 隐藏或显示
+        function replaceForm(){
+            let replaceForm = document.querySelector('.replace-form');
+            if(replaceForm.style.display === 'none'){
+                replaceForm.style.display = 'flex';
+            }else{
+                replaceForm.style.display = 'none';
+            }
+        
+        }
+    </script> 
+    -->
+
+  <noscript> Sorry, your browser does not support JavaScript! </noscript>
+
+  <footer style="text-align: center; font-size: 0.8em">
+    <p>
+      Copyright ©2024 |
+      <a href="https://new.imyai.top/mobile?s=imyai" style="color: #ff7014" target="_blank">图欧科技</a>
+      出品<br /><br /><a href="https://beian.miit.gov.cn" style="color: #ff7014"
+        target="_blank">粤ICP备2023011968号</a><br /><br />
+    </p>
+  </footer>
+
+  <script>
+    window.addEventListener("message", function (event) {
+      try {
+        const data = JSON.parse(event.data);
+        const theme = data["data-theme"];
+        if (theme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+      } catch (e) { }
+    });
+  </script>
+</body>
+
+</html>

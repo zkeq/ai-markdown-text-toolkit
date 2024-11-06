@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <title>关于字数和字符的一些知识</title>
+    <script>
+        // document.documentElement.setAttribute('data-theme', 'dark');
+
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // 根据用户的系统主题设定 data-theme
+        if (prefersDarkScheme.matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.querySelector('.switch_wapper .iconfont').classList.remove('icon-taiyang')
+            document.querySelector('.switch_wapper .iconfont').classList.add('icon-ic_Dark')
+            // document.querySelector('.switch_wapper .switch').classList.add('active')
+        } else {
+            document.documentElement.setAttribute('data-theme', 'light');
+            // document.querySelector('.switch_wapper .iconfont').classList.add('icon-taiyang')
+
+        }
+    </script>
+    <style>
+body {
+    color: #606D8F;
+    font-size: 1em;
+    font-weight: 400;
+    line-height: 1.75;
+}
+[data-theme='dark'] body {
+  background: #1B1B1D;
+  color: rgb(227, 227, 227);
+}
+
+[data-theme='dark'] .content h1,[data-theme='dark']  .content h2,[data-theme='dark'] .content h3,[data-theme='dark'] .content h4,[data-theme='dark'] .content h5,[data-theme='dark'] .content h6 {
+    color: rgb(227, 227, 227);
+}
+
+.pb-6 {
+    padding-bottom: 3rem !important;
+}
+.column {
+    display: block;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-shrink: 1;
+    padding: 0.75rem;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+.title.is-4 {
+    font-size: 1.5rem;
+}
+.title.is-4 {
+    font-size: 1.5rem;
+}
+.content:not(:last-child), .box:not(:last-child), .notification:not(:last-child), .progress:not(:last-child), .table:not(:last-child), .table-container:not(:last-child), .title:not(:last-child), .subtitle:not(:last-child), .block:not(:last-child), .highlight:not(:last-child), .breadcrumb:not(:last-child), .level:not(:last-child), .message:not(:last-child), .pagination:not(:last-child), .tabs:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+.title {
+    color: #363636;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.title, .subtitle {
+    word-break: break-word;
+}
+.title {
+    color: #363636;
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.title, .subtitle {
+    word-break: break-word;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+html, body, p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+.title:not(.is-spaced) + .subtitle {
+    margin-top: -1.25rem;
+}
+.title:not(.is-spaced) + .subtitle {
+    margin-top: -1.25rem;
+}
+.subtitle.is-6 {
+    font-size: 1rem;
+}
+.subtitle.is-6 {
+    font-size: 1rem;
+}
+.content:not(:last-child), .box:not(:last-child), .notification:not(:last-child), .progress:not(:last-child), .table:not(:last-child), .table-container:not(:last-child), .title:not(:last-child), .subtitle:not(:last-child), .block:not(:last-child), .highlight:not(:last-child), .breadcrumb:not(:last-child), .level:not(:last-child), .message:not(:last-child), .pagination:not(:last-child), .tabs:not(:last-child) {
+    margin-bottom: 1.5rem;
+}
+.subtitle {
+    color: #606D8F;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.25;
+}
+.title, .subtitle {
+    word-break: break-word;
+}
+.subtitle {
+    color: #606D8F;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.25;
+}
+.title, .subtitle {
+    word-break: break-word;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+html, body, p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+.content h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.6666em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.content h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.6666em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.content h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.6666em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+html, body, p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+.content h4 {
+    font-size: 1.25em;
+    margin-bottom: 0.8em;
+}
+
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.content h4 {
+    font-size: 1.25em;
+    margin-bottom: 0.8em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+.content h4 {
+    font-size: 1.25em;
+    margin-bottom: 0.8em;
+}
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 {
+    color: #363636;
+    font-weight: 600;
+    line-height: 1.125;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+html, body, p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+.content p:not(:last-child), .content dl:not(:last-child), .content ol:not(:last-child), .content ul:not(:last-child), .content blockquote:not(:last-child), .content pre:not(:last-child), .content table:not(:last-child) {
+    margin-bottom: 1em;
+}
+
+.content p:not(:last-child), .content dl:not(:last-child), .content ol:not(:last-child), .content ul:not(:last-child), .content blockquote:not(:last-child), .content pre:not(:last-child), .content table:not(:last-child) {
+    margin-bottom: 1em;
+}
+.content p:not(:last-child), .content dl:not(:last-child), .content ol:not(:last-child), .content ul:not(:last-child), .content blockquote:not(:last-child), .content pre:not(:last-child), .content table:not(:last-child) {
+    margin-bottom: 1em;
+}
+html, body, p, ol, ul, li, dl, dt, dd, blockquote, figure, fieldset, legend, textarea, pre, iframe, hr, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+a {
+    color: #ff9d5e;
+}
+
+#app {
+    /* 最大宽度800px 水平居中 */
+    max-width: 800px;
+    margin: 0 auto;
+    padding-top: 120px;
+}
+    </style>
+</head>
+<body>
+    <div class="column pb-6" id="app">
+        <h4 class="title is-info is-4">
+            <a href="/">返回在线文本统计、编辑与优化神器</a>
+        </h4>
+        <div class="content">
+          <h3>位,字,字节,字长,字符串,字符,字数区别及计算方法？</h3>
+          <h4>位</h4>
+          <p>位是信息技术中使用的术语，也称比特（bit）。是最小的信息单位。Bit是二进制数字的缩写(BInarydigiT)，因为位实在是太小了，用来表示大数目时不方便，所以有了字节（byte），一个在信息技术和数码技术领域中，用于表示信息的数量的单位。即，一个字节有8个位。</p>
+          <h4>字</h4>
+          <p>在计算机中，一串数码作为一个整体来处理或运算的，称为一个计算机字，简称字。字通常分为若干个字节(每个字节一般是8位)。在存储器中，通常每个单元存储一个字，因此每个字都是可以寻址的。字的长度用位数来表示。<br>
+            在计算机的运算器、控制器中，通常都是以字为单位进行传送的。字出现在不同的地址其含义是不相同。例如，送往控制器去的字是指令，而送往运算器去的字就是一个数。<br>
+            “字”由若干个字节构成，字的位数叫做字长，字长就是说字所对应的二进制数的长度。不同的机器有不同的字长。例如一台8位机，它的1个字就等于1个字节，字长为8位。如果是一台16位机，那么，它的1个字就由2个字节构成，字长为16位。前期的DOS就是8位的，后期的DOS是16位的，Win9X是基于DOS的，所以也是16位的，NT核心的Windows是32位的，现在也有了64位的XP/2003，CPU也有了64位的，这个操作系统和CPU所说的位就是bit的意思，即二进制数的长度。字节是固定由8位二进制构成，64位系统就代表了64位的二进制代表一个字，换算成字节就是64/8=8，即是说由8字节构成一个字，32位系统就是32/8=4，4个字节代表一个字。<br>
+            如在ARM体系结构中，字的长度为32位，而在8位/16位处理器体系结构中，字的长度一般为16位。</p>
+          <h4>字节</h4>
+          <p>字节(Byte)是计算机信息技术用于计量存储容量和传输容量的一种计量单位，1个字节等于8位二进制。<br>
+            由字节引申出的计量单位<br>
+            1kilobyte[kB]=1000(103)byte<br>
+            1megabyte[MB]=1000000(106)byte<br>
+            1gigabyte[GB]=1000000000(109)byte<br>
+            1terabyte[TB]=1000000000000(1012)byte<br>
+            1petabyte[PB]=1000000000000000(1015)byte<br>
+            1exabyte[EB]=1000000000000000000(1018)byte<br>
+            1zettabyte[ZB]=1000000000000000000000(1021)byte<br>
+            1yottabyte[YB]=1000000000000000000000000(1024)byte<br>
+            1nonabyte[NB]=1000000000000000000000000000(1027)byte<br>
+            1doggabyte[DB]=1000000000000000000000000000000(1030)byte<br>
+            1kibibyte[KiB]=1024(210)byte<br>
+            1mebibyte[MiB]=1048576(220)byte<br>
+            1gibibyte[GiB]=1073741824(230)byte<br>
+            1tebibyte[TiB]=1099511627776(240)byte<br>
+            1pebibyte[PiB]=1125899906842624(250)byte<br>
+            1exbibyte[EiB]=1152921504606846976(260)byte<br>
+            1zebibyte[ZiB]=1180591620717411303424(270)byte<br>
+            1yobibyte[YiB]=1208925819614629174706176(280)byte<br>
+            1nobibyte[NiB]=1237940039285380274899124224(290)byte<br>
+            1dogbibyte[DiB]=1267650600228229401496703205376(2100)byte</p>
+          <h4>字长</h4>
+          <p>字长是直接用二进制代码指令表达的计算机语言，指令是用0和1组成的一串代码，它们有一定的位数，并分成若干字长段，各段的编码表示不同的含义，例如某台计算机字长为16位，即有16个二进制数组成一条指令或其它信息。16个0和1可组成各种排列组合，通过线路变成电信号，让计算机执行各种不同的操作。<br>
+            字长由微处理器对外数据通路的数据总线条数决定。</p>
+          <h4>字符串</h4>
+          <p>字符串或串(String)是由数字、字母、下划线组成的一串字符。一般记为s=“a1a2···an”(n≥0)。它是编程语言中表示文本的数据类型。<br>
+            通常以串的整体作为操作对象，如：在串中查找某个子串、求取一个子串、在串的某个位置上插入一个子串以及删除一个子串等。两个字符串相等的充要条件是：长度相等，并且各个对应位置上的字符都相等。设p、q是两个串，求q在p中首次出现的位置的运算叫做模式匹配。串的两种最基本的存储方式是顺序存储方式和链接存储方式。</p>
+          <h4>字符</h4>
+          <p>字符(Character)是指人类语言最小的表义符号。<br>
+            字符是指计算机中使用的字母、数字、字和符号，包括：1、2、3、A、B、C、~！·#￥%……—*（）——+等等。<b style="color:red;">1个汉字字符存储需要2个字节，1个英文字符存储需要1个字节。</b>例如在VB中求字符串的长度时，len（str（1234））=4。<br>
+            字符是可使用多种不同字符方案或代码页来表示的抽象实体。例如，UnicodeUTF-16编码将字符表示为16位整数序列，而UnicodeUTF-8编码则将相同的字符表示为8位字节序列。公共语言运行库使用UnicodeUTF-16（Unicode转换格式，16位编码形式）表示字符。<br>
+            针对公共语言运行库的应用程序使用编码将字符表示形式从本机字符方案映射至其他方案。应用程序使用解码将字符从非本机方案映射至本机方案。<br>
+            电脑和通讯设备会使用字符编码的方式来表达字符。意思是指，会将一个字符指定给某个东西。传统上，是代表整数量的位元序列，如此，则可透过网络来传输，同时亦便于储存。两个常用的例子是ASCII和用于统一码的UTF-8。根据谷歌的统计，UTF-8是目前最常用于网页的编码方式。[1]相较于大部分的字符编码把字符对应到数字或位元串，摩斯密码则是使用不定长度的电子脉冲的序列来表现字符。</p>
+          <h4>字数</h4>
+          <p>不管书中标题多大，插图多少，都按横格字数乘每页行数乘总页数求出全书字数。若全页都是照片或插图，则不算字数。<br>
+            字数计算有两种方法，一是包含符号，一是不含符号。</p>
+          <h3>网页编码中，一个汉字占多少字节？</h3>
+          <p>GBK编码，一个汉字占两个字节。<br>
+            UTF-16编码，通常汉字占两个字节，CJKV扩展B区、扩展C区、扩展D区中的汉字占四个字节（一般字符的Unicode范围是U+0000至U+FFFF，而这些扩展部分的范围大于U+20000，因而要用两个UTF-16）。<br>
+            UTF-8编码是变长编码，通常汉字占三个字节，扩展B区以后的汉字占四个字节。 </p>
+          <h3>wore中如何空两个字?</h3>
+          <p>word文档中按几下空格键就等于两个汉字的长度？<br>
+            一般首行缩进2个字符，1汉字=2字符，也可以在了段落前点击右键-段落-缩进和间距-4字符。</p>
+          <h3>小说中的字数?</h3>
+          <p>短篇小说:字数以五千至一万五千字为原则。 <br>
+            中篇小说:字数以三万至七万字为原则。 <br>
+            中长篇小说一般没有明确的字数规定，  但作为严格的出版部门，一般以字数在8万以上。作为长篇小说，  
+            
+            2万-6万字或4万-8万字或者更低一些称为中篇小说。 <br>
+            微型小说，指的是篇幅微小，不超过一千五百个字。 <br>
+          </p>
+          <h3>短信和微博最长能发多少字？</h3>
+          <p>目前每单位短信最多是140个英文字符/70个汉字符，超过这个的手机将自动分割成相应条数（按条数收费），并在收件人的手机上自动组合。<br>
+            如果字数太多的话，比如1000个汉字，建议使用彩信进行发送（如果双方都支持彩信的话），这样会比较划算，因为单位彩信的文字最大容量是1000个中文字符。一条彩信=？条普通短信。<br>
+            微博之所以要限定140个字符，就是源于从手机发短信最多的字符就是140个，根据人眼一次性识别内容的物理特性定的。更为了手机发布阅读方便。</p>
+          <h3>小说或者投稿如何计字数</h3>
+          <p>字数不包括标点；字符数（不计空格）包括标点，不包括空格；字符数（计空格）既包括标点，也包括空格。<br>
+            考试作文计字数的话，不包括空格和标点，算字数。<br>
+            向出版社、报社投稿的话，包括空格和标点，算字符数（计空格）。<br>
+            根据国家1996年颁布的《标点符号用法》，常用的标点符号有16种：句号、问号、叹号、逗号、顿号、分号、冒号、引号、括号、破折号、省略号、着重号、连接号、间隔号、书名号和专名号。没有空格。所以不算标点符号。</p>
+          <h3>论坛签名的长度？</h3>
+          <p>在很多论坛大家都会因为自己的权限不够，签名长度短的可怜，根本达不到自己想要的推广效果。在这给大家一个小技巧，但不是所有的论坛都可以。在签名时省略网页标签的后半部分，为您的签名主要内容增加字符长度，也就是省去诸如：[/url][/size][/color][/b]等标签的结束标签，也可以省略网址前缀”http://“。在您点击保存后，系统会自动为你添加，而不占用你的签名长度。</p>
+          <h3>用手机上QQ和微信发一条信息占用多少流量？</h3>
+          <p>英文，数字：1个字节=1个字母。<br>
+            汉字：2个字节=1个汉字。<br>
+            B（Byte，字节）是计算机中最基本的计量单位，还有b（bit，位，注意这个b和大写B的差别），b，位，是计算机中最小的单位，1B=8b。一个英文字母或数字在电脑中占用一个字节的空间，一个汉字占用两个字节（称为字），即1字=2字节。512字=1024字节=1KB=1/1024MB。</p>
+        </div>
+      </div>
+</body>
+</html>
