@@ -114,16 +114,8 @@ class QuestionItem(BaseModel):
     text: str
     prefix: Optional[str] = UseGpt.prefix
 
-
-def verify_referer(referer: str = Header(None)):
-    allowed_referer = os.getenv("ALLOWED_REFERER")
-    if referer != allowed_referer:
-        raise HTTPException(status_code=403, detail="Forbidden: Invalid referer")
-    
-
 @app.post("/improve")
 async def improve(item: QuestionItem, referer: str = Header(None)):
-    verify_referer(referer)
     if not check_timestamp(item.timestamp):
         return {"error": "时间戳验证失败"}
 
@@ -159,7 +151,6 @@ class PinyinItem(BaseModel):
 
 @app.post("/pinyin")
 async def root(item: PinyinItem, referer: str = Header(None)):
-    verify_referer(referer)
     item = item.dict()
     if not check_timestamp(item["timestamp"]):
         return {"error": "密钥验证失败"}
