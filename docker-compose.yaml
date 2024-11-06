@@ -16,7 +16,5 @@ services:
     volumes:
       - ./backend/config.json:/app/config.json:rw
     environment:
-      - OPENAI_KEY="SK-1234567890"
-      - OPENAI_MODEL="gpt-3.5-turbo"
-      - OPENAI_API="https://api.openai.com/v1/engines"
       - ALLOWED_REFERER="http://localhost:3030"
+      - PASSWORD="password"

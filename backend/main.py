@@ -57,7 +57,7 @@ class GetConfigItem(BaseModel):
 
 @app.post("/info")
 def get_info(item: GetConfigItem):
-    if item.password != "[此处填写你的密码]":
+    if item.password != os.getenv("PASSWORD"):
         return {
             "msg": "密码错误, 请重试"
         }
@@ -79,7 +79,7 @@ class PutConfigItem(BaseModel):
 
 @app.put("/info")
 def get_info(item: PutConfigItem):
-    if item.password != "[此处填写你的密码]":
+    if item.password != os.getenv("PASSWORD"):
         return {
             "msg": "密码错误, 请重试"
         }
