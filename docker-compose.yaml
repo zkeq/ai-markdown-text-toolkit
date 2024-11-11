@@ -16,4 +16,4 @@ services:
     volumes:
       - ./backend/config.json:/app/config.json:rw
     environment:
-      - PASSWORD="password"
+      - PASSWORD=后台密码
