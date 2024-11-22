@@ -1413,7 +1413,7 @@ body{
     background: #fafafa;
 }
 
-img {
+.introjs-tooltip img {
     width: 100%;
 }
 
