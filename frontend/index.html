@@ -1268,9 +1268,12 @@
 
     function deleteSymbol() {
       let text = document.getElementById("content").value;
-
-      let result = text.replace(/[\[\]\(\)#\*]/g, "");
-
+      
+      // 使用 \p{P} 匹配所有标点符号
+      // 使用 \p{S} 匹配所有符号
+      // 需要使用 u 标志以支持 Unicode 属性
+      let result = text.replace(/[\p{P}\p{S}]/gu, "");
+      
       document.getElementById("content").value = result;
       pushUndoStack();
       CountChineseCharacters();
