@@ -1166,11 +1166,17 @@
     }
 
     function removeMarkdown(markdown) {
+      // 在解析前保存有序列表的序号
+      markdown = markdown.replace(/^(\d+)\.\s/gm, '___$1___. ');
+      
       let html = marked.parse(markdown);
       // 使用 striptags 库删除所有 HTML 标签，得到普通文本
       let text = striptags(html);
       let decodedText = he.decode(text);
-
+      
+      // 恢复之前保存的序号
+      decodedText = decodedText.replace(/___(\d+)___\./g, '$1.');
+      
       return decodedText;
     }
 
